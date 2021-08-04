@@ -44,7 +44,9 @@
 
     <!-- We copy the \Logs directory -->
     <Content Include="Logs\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Remove="Themes\MyTheme\Content\css\bootstrap.min.css" />
     <Content Remove="Themes\MyTheme\Content\css\custome.css" />
+    <Content Remove="Themes\MyTheme\Content\images\logo.png" />
     <None Remove="Themes\MyTheme\Content\css\print.css" />
     <None Remove="Themes\MyTheme\Content\css\styles.css" />
     <None Remove="Themes\MyTheme\Content\css\styles.rtl.css" />
@@ -64,7 +66,6 @@
     <None Remove="Themes\MyTheme\Content\images\ie_warning.jpg" />
     <None Remove="Themes\MyTheme\Content\images\last.png" />
     <None Remove="Themes\MyTheme\Content\images\loading.gif" />
-    <None Remove="Themes\MyTheme\Content\images\logo.png" />
     <None Remove="Themes\MyTheme\Content\images\menu-icon.png" />
     <None Remove="Themes\MyTheme\Content\images\move.png" />
     <None Remove="Themes\MyTheme\Content\images\new.png" />

@@ -3,8 +3,7 @@
 @inject Nop.Core.IWebHelper webHelper
 
 <div class="header-links">
-    <ul>
-        <a href="#" class="text-danger bold-text">Link</a>
+    <ul class="nav-bar">
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderLinksBefore })
         @if (Model.IsAuthenticated)
         {
@@ -28,6 +27,14 @@
         <span class="inbox-unread">@Model.UnreadPrivateMessages</span>
     </a>
 </li>}
+        @if (Model.ShoppingCartEnabled)
+        {
+            <li id="topcartlink">
+                <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
+                    <span class="cart-label">@T("ShoppingCart")</span>
+                    <span class="cart-qty">@T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems)</span>
+                </a>
+            </li>}
         @if (Model.WishlistEnabled)
         {
 <li>
@@ -36,14 +43,7 @@
         <span class="wishlist-qty">@T("Wishlist.HeaderQuantity", Model.WishlistItems)</span>
     </a>
 </li>}
-        @if (Model.ShoppingCartEnabled)
-        {
-<li id="topcartlink">
-    <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
-        <span class="cart-label">@T("ShoppingCart")</span>
-        <span class="cart-qty">@T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems)</span>
-    </a>
-</li>}
+  
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderLinksAfter })
     </ul>
     @if (Model.AllowPrivateMessages && !string.IsNullOrEmpty(Model.AlertMessage))
