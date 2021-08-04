@@ -16,12 +16,16 @@
 </div>
 
 <div class="container">
-    <div class="header-lower">
-        <div class="header-logo">
-            @await Component.InvokeAsync("Logo")
+    <div class="row header-lower">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="header-logo">
+                @await Component.InvokeAsync("Logo")
+            </div>
         </div>
-        <div class="search-box store-search-box">
-            @await Component.InvokeAsync("SearchBox")
+        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-12 search-box store-search-box">
+                @await Component.InvokeAsync("SearchBox")
+            </div>
         </div>
     </div>
 </div>
