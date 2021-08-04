@@ -17,12 +17,14 @@
   line-height: 36px !important;
   font-weight: 400 !important;
 }
+
 .header-links a {
   padding: 7px 10px;
   line-height: 50px;
   text-transform: none;
   font-weight: 400 !important;
 }
+
 a {
   cursor: pointer;
   text-decoration: none;
@@ -57,9 +59,9 @@ a {
   margin: 0 !important;
 }
 
-#topcartlink a{
-  background: transparent !important;
-}
+  #topcartlink a {
+    background: transparent !important;
+  }
 
 .header-upper {
   position: sticky;
@@ -77,18 +79,6 @@ a {
 
 
 
-.search-box .search-box-button {
-  float: left;
-  min-width: 86px;
-  border: none;
-  border-radius: 0 5px 5px 0;
-  background-color: #01619D;
-  padding: 0 15px;
-  text-align: center;
-  color: #fff;
-  text-transform: capitalize;
-  font-size: 14px;
-}
 
 .header-lower {
   position: relative;
@@ -98,12 +88,107 @@ a {
 
 .search-box form {
   display: inline-block;
-  width: 70%;
+  width: 100%;
   margin-left: 70px;
   height: 36px !important;
+}
+
+.search-box {
+  float: right;
 }
 
 
 * {
   font-family: 'Open Sans', sans-serif;
+}
+
+.header-menu > nav {
+  display: block !important;
+  background-color: #000;
+  padding: 0;
+}
+
+.header-menu {
+  border: none !important;
+}
+
+  .header-menu nav > div > ul > li:first-child {
+    border-left: none;
+    padding-left: 20px;
+  }
+
+.dropdown, .dropleft, .dropright, .dropup {
+  position: relative;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  -ms-transition: background-color 0.3s ease-in-out;
+  -o-transition: background-color 0.3s ease-in-out;
+  -webkit-transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+  display: block;
+  height: 100%;
+  color: black;
+}
+
+.search-box input.search-box-text {
+  float: left;
+  margin: 0 -1px 0 0;
+  border-radius: 5px 0px 0px 5px;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"], textarea, select {
+  height: 36px !important;
+  border: 1px solid #ddd !important;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.header-menu > nav > div > ul > li > a {
+  display: block;
+  padding: 5px 10px;
+  line-height: 50px;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header-menu .sublist li:hover > a, .header-menu .sublist li:focus > a {
+  background-color: #378fc3;
+}
+
+.header-menu .sublist li a {
+  display: block;
+  position: relative;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #01619d;
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-menu .sublist li {
+  list-style: none;
+}
+
+.header-menu .sublist {
+  width: 200px;
+  box-shadow: 0 0 2px rgb(0 0 0 / 20%);
+  background-color: #222222;
+  padding: 0;
+  text-align: left;
+  list-style: none !important;
+  margin: 0;
+}
+ul {
+  list-style: none !important;
+}
+
+.header-menu .sublist li {
+  position: relative;
+  margin-bottom: 5px;
+  list-style-type: none;
 }

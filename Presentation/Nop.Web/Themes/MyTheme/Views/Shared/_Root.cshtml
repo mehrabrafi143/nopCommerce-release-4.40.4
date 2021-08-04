@@ -14,11 +14,11 @@
         };
         AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart', localized_data);
     </script>
-    <div class="header-menu">
+    <div class="container header-menu">
         @await Component.InvokeAsync("TopMenu")
     </div>
     <div class="master-wrapper-content">
-        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentBefore })
+        @* @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentBefore }) *@
 
         @if (IsSectionDefined("Breadcrumb"))
         {

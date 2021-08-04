@@ -1,57 +1,62 @@
 ﻿@model TopMenuModel
-  
+
 @functions {async Task CategoryLine(TopMenuModel.CategoryLineModel lineModel)
     {
 
-            <li>
-                <a href="@Url.RouteUrl("Category", new { SeName = lineModel.Category.SeName })">
-                    @lineModel.Category.Name
-                    @if (lineModel.Category.NumberOfProducts.HasValue)
-                    {
-        <text> </text>@T("Categories.TotalProducts", lineModel.Category.NumberOfProducts.Value)}
-                </a>
+        var subCategories = lineModel.ResponsiveMobileMenu ?
+            //responsive (all categories)
+            lineModel.Category.SubCategories :
+            //standard design (only categories with "IncludeInTopMenu")
+            lineModel.Category.SubCategories.Where(x => x.IncludeInTopMenu).ToList();
 
-                @{ //subcategories
-                    var subCategories = lineModel.ResponsiveMobileMenu ?
-                        //responsive (all categories)
-                        lineModel.Category.SubCategories :
-                        //standard design (only categories with "IncludeInTopMenu")
-                        lineModel.Category.SubCategories.Where(x => x.IncludeInTopMenu).ToList();
+        string className = subCategories.Count > 0 ? "dropdown" : "list-item";
 
-                    var levelClass = "";
-                    if (lineModel.Level == 0)
+<li class="@className">
+    <a href="@Url.RouteUrl("Category", new { SeName = lineModel.Category.SeName })">
+        @lineModel.Category.Name
+        @if (lineModel.Category.NumberOfProducts.HasValue)
+        {
+    <text> </text>@T("Categories.TotalProducts", lineModel.Category.NumberOfProducts.Value)}
+
+        @if (subCategories.Count > 0)
+        {
+    <i class="fa fa-angle-down"></i>}
+
+    </a>
+
+    @{ //subcategories
+
+        var levelClass = "";
+        if (lineModel.Level == 0)
+        {
+            levelClass = "first-level";
+        }
+        if (subCategories.Count > 0)
+        {
+            <ul class="dropdown-menu sublist @levelClass">
+                    @foreach (var subCategory in subCategories)
                     {
-                        levelClass = "first-level";
+                        var categoryLineModel = new TopMenuModel.CategoryLineModel
+                        {
+                            Category = subCategory,
+                            Level = lineModel.Level + 1,
+                            ResponsiveMobileMenu = lineModel.ResponsiveMobileMenu
+                        };
+                        await CategoryLine(categoryLineModel);
                     }
-                    if (subCategories.Count > 0)
-                    {
-        <div class="sublist-toggle"></div>
-                        <ul class="sublist @levelClass">
-                            @foreach (var subCategory in subCategories)
-                            {
-                                var categoryLineModel = new TopMenuModel.CategoryLineModel
-                                {
-                                    Category = subCategory,
-                                    Level = lineModel.Level + 1,
-                                    ResponsiveMobileMenu = lineModel.ResponsiveMobileMenu
-                                };
-                                await CategoryLine(categoryLineModel);
-                            }
-                        </ul> } }
-            </li>}
+                </ul> } }
+</li>}
 }
-
-<ul class="top-menu notmobile">
-    <li><a href="#" class="text-danger bold-text">Link</a></li>  
-
-    @await Component.InvokeAsync("Widget", new {widgetZone = PublicWidgetZones.HeaderMenuBefore})
-    @if (Model.DisplayHomepageMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>
-    }
-    @if (!Model.UseAjaxMenu)
-    {
-        var rootCategories = Model.Categories.Where(x => x.IncludeInTopMenu).ToList();
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="collapse navbar-collapse" id="collapsibleNavbarCategory">
+        <ul class="navbar-nav">
+            @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderMenuBefore })
+            @if (Model.DisplayHomepageMenuItem)
+            {
+<li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>}
+            @if (!Model.UseAjaxMenu)
+            {
+                var rootCategories = Model.Categories.Where(x => x.IncludeInTopMenu).ToList();
 @foreach (var category in rootCategories)
 {
     var categoryLineModel = new TopMenuModel.CategoryLineModel
@@ -59,39 +64,35 @@
         Category = category
     };
     await CategoryLine(categoryLineModel);
-}
-    }
-    @foreach (var topic in Model.Topics)
-    {
-        <li><a href="@Url.RouteUrl("Topic", new {SeName = topic.SeName})">@topic.Name</a></li>
-    }
-    @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
-    }
-    @if (Model.DisplayProductSearchMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>
-    }
-    @if (Model.DisplayCustomerInfoMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
-    }
-    @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-    }
-    @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
-    }
-    @if (Model.DisplayContactUsMenuItem)
-    {
-        <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-    }
-    @await Component.InvokeAsync("Widget", new {widgetZone = PublicWidgetZones.HeaderMenuAfter})
-    <li><a href="#" class="text-danger bold-text">Link</a></li>  
-</ul>
+}}
+            @foreach (var topic in Model.Topics)
+            {
+<li><a href="@Url.RouteUrl("Topic", new {SeName = topic.SeName})">@topic.Name</a></li>}
+            @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
+            {
+<li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>}
+            @if (Model.DisplayProductSearchMenuItem)
+            {
+<li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>}
+            @if (Model.DisplayCustomerInfoMenuItem)
+            {
+<li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>}
+            @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
+            {
+<li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>}
+            @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
+            {
+<li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>}
+            @if (Model.DisplayContactUsMenuItem)
+            {
+<li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>}
+            @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderMenuAfter })
+        </ul>
+
+    </div>
+</nav>
+
+
 @{ var rootCategoriesResponsive = Model.Categories.ToList();
     //name it "Categories" if we have only categories. Otherwise, "Menu"
     var responsiveMenuTitle = Model.HasOnlyCategories ? T("Categories") : T("Menu");
@@ -100,8 +101,7 @@
                 @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuBefore })
                 @if (Model.DisplayHomepageMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>
-}
+    <li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>}
                 @if (!Model.UseAjaxMenu)
                 {
     @foreach (var category in rootCategoriesResponsive)
@@ -115,32 +115,25 @@
     }}
                 @foreach (var topic in Model.Topics)
                 {
-    <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
-}
+    <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>}
                 @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
-}
+    <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>}
                 @if (Model.DisplayProductSearchMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>
-}
+    <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>}
                 @if (Model.DisplayCustomerInfoMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
-}
+    <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>}
                 @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-}
+    <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>}
                 @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
-}
+    <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>}
                 @if (Model.DisplayContactUsMenuItem)
                 {
-    <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-}
+    <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>}
                 @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuAfter })
             </ul>
 
@@ -156,20 +149,39 @@
             };
             mainMenu.init('@Url.RouteUrl("GetCatalogRoot")', '@Url.RouteUrl("GetCatalogSubCategories")', 'ul.top-menu.notmobile', 'ul.top-menu.mobile', localized_data);
         });
-            </script>
- Html.AppendScriptParts(ResourceLocation.Footer, "~/js/public.menu.js");
+            </script> Html.AppendScriptParts(ResourceLocation.Footer, "~/js/public.menu.js");
 
-        }
-        else
-        {
-<script asp-location="Footer">
-    $(document).ready(function () {
-        $('.menu-toggle').on('click', function () {
-            $(this).siblings('.top-menu.mobile').slideToggle('slow');
-        });
-        $('.top-menu.mobile .sublist-toggle').on('click', function () {
-            $(this).siblings('.sublist').slideToggle('slow');
-        });
-    });
-</script>
-} }
+                        }
+                        else
+                        {
+            <script asp-location="Footer">
+                $(document).ready(function () {
+                    $('.menu-toggle').on('click', function () {
+                        $(this).siblings('.top-menu.mobile').slideToggle('slow');
+                    });
+                    $('.top-menu.mobile .sublist-toggle').on('click', function () {
+                        $(this).siblings('.sublist').slideToggle('slow');
+                    });
+                });
+            </script>} }
+
+
+
+@* <div class="container header-menu"> *@
+@*     <nav class="navbar navbar-expand-md navbar-dark"> *@
+@*         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbarCategory"> *@
+@*              <span class="navbar-toggler-icon"></span> *@
+@*         </button> *@
+@*         <div class="collapse navbar-collapse" id="collapsibleNavbarCategory"> *@
+@*             <ul class="navbar-nav"> *@
+@*                 <li class="dropdown"> *@
+@*                     <a data-toggle="dropdown" href="#"> Computers <i class="fa fa-angle-down"></i> </a><ul class="dropdown-menu sublist first-level"> *@
+@*                         <li class="list-item"><a href="/desktops"> Desktops </a></li> *@
+@*                         <li class="list-item"><a href="/notebooks"> Notebooks </a></li><li class="list-item"><a href="/software"> Software </a></li> *@
+@*                     </ul> *@
+@*                 </li> *@
+@*                 <li class="dropdown"><a data-toggle="dropdown" href="#"> Electronics <i class="fa fa-angle-down"></i> </a><ul class="dropdown-menu sublist first-level"><li class="list-item"><a href="/camera-photo"> Camera &amp; photo </a></li><li class="list-item"><a href="/cell-phones"> Cell phones </a></li><li class="list-item"><a href="/others"> Others </a></li></ul></li><li class="dropdown"><a data-toggle="dropdown" href="#"> Apparel <i class="fa fa-angle-down"></i> </a><ul class="dropdown-menu sublist first-level"><li class="list-item"><a href="/shoes"> Shoes </a></li><li class="list-item"><a href="/clothing"> Clothing </a></li><li class="list-item"><a href="/accessories"> Accessories </a></li></ul></li><li class="list-item"><a href="/digital-downloads"> Digital downloads </a></li><li class="list-item"><a href="/books"> Books </a></li><li class="list-item"><a href="/jewelry"> Jewelry </a></li><li class="list-item"><a href="/gift-cards"> Gift Cards </a></li> *@
+@*             </ul> *@
+@*         </div> *@
+@*     </nav> *@
+@* </div> *@

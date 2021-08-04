@@ -46,6 +46,7 @@
     <Content Include="Logs\**" CopyToPublishDirectory="PreserveNewest" />
     <Content Remove="Themes\MyTheme\Content\css\bootstrap.min.css" />
     <Content Remove="Themes\MyTheme\Content\css\custome.css" />
+    <Content Remove="Themes\MyTheme\Content\fnt-awesomeall.min.css" />
     <Content Remove="Themes\MyTheme\Content\images\logo.png" />
     <None Remove="Themes\MyTheme\Content\css\print.css" />
     <None Remove="Themes\MyTheme\Content\css\styles.css" />
