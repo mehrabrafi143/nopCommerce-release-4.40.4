@@ -1,0 +1,6 @@
+﻿{
+  "DataConnectionString": "Data Source=MEHRAB-KARIM-PC\\mssqlserver01;Initial Catalog=DbTest;Integrated Security=False;Persist Security Info=False;User ID=sa;Password=Rafis143@$",
+  "DataProvider": "sqlserver",
+  "SQLCommandTimeout": null,
+  "RawDataSettings": {}
+}
